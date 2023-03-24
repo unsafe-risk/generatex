@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"go/format"
 	"log"
 	"os"
 	"strconv"
@@ -42,12 +43,17 @@ func main() {
 	buf.WriteString("\t}\n")
 	buf.WriteString("}\n")
 
+	rs, err := format.Source(buf.Bytes())
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	f, err := os.Create("./tuple.go")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	_, err = f.Write(buf.Bytes())
+	_, err = f.Write(rs)
 	if err != nil {
 		log.Fatal(err)
 	}
