@@ -22,7 +22,6 @@ func main() {
 	buf := bytes.NewBuffer(nil)
 	buf.WriteString("package " + packageName)
 	buf.WriteString("\n\n")
-	buf.WriteString("import \"fmt\"\n\n")
 	buf.WriteString("func HelloWorld() string {\n")
 	buf.WriteString("\treturn \"Hello World\"\n")
 	buf.WriteString("}\n")
