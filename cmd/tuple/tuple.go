@@ -6,21 +6,23 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func main() {
 	if len(os.Args) < 3 {
-		log.Println("Usage: tuple <package-name> <type>...")
+		log.Println("Usage: tuple <package-name> <type-name> <type>...")
 		return
 	}
 
 	packageName := os.Args[1]
-	types := os.Args[2:]
+	typeName := os.Args[2]
+	types := os.Args[3:]
 
 	buf := bytes.NewBuffer(nil)
 	buf.WriteString("package " + packageName)
 	buf.WriteString("\n\n")
-	buf.WriteString("type Tuple struct {\n")
+	buf.WriteString("type " + typeName + " struct {\n")
 	for i, t := range types {
 		buf.WriteString("\t" + "V" + strconv.FormatInt(int64(i+1), 10) + " " + t + "\n")
 	}
@@ -28,15 +30,15 @@ func main() {
 
 	buf.WriteString("\n")
 
-	buf.WriteString("func NewTuple(")
+	buf.WriteString("func New" + typeName + "(")
 	for i, t := range types {
 		if i > 0 {
 			buf.WriteString(", ")
 		}
 		buf.WriteString("v" + strconv.FormatInt(int64(i+1), 10) + " " + t)
 	}
-	buf.WriteString(") Tuple {\n")
-	buf.WriteString("\treturn Tuple{\n")
+	buf.WriteString(") " + typeName + " {\n")
+	buf.WriteString("\treturn " + typeName + "{\n")
 	for i := range types {
 		buf.WriteString("\t\t" + "V" + strconv.FormatInt(int64(i+1), 10) + ": v" + strconv.FormatInt(int64(i+1), 10) + ",\n")
 	}
@@ -48,7 +50,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	f, err := os.Create("./tuple.go")
+	f, err := os.Create("./" + strings.ToLower(typeName) + ".go")
 	if err != nil {
 		log.Fatal(err)
 	}
