@@ -52,7 +52,7 @@ func main() {
 	buf.WriteString(") (")
 	buf.WriteString(fmt.Sprintf("result %s", types[len(types)-1]))
 	buf.WriteString(", err error) {\n")
-	buf.WriteString("\trs1 := init\n")
+	buf.WriteString("\trs1 := init\n\n")
 	for i := range types[:len(types)-1] {
 		buf.WriteString(fmt.Sprintf("\trs%d, err := s.F%d(rs%d)\n", i+2, i+1, i+1))
 		buf.WriteString("\tif err != nil {\n")
