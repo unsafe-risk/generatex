@@ -111,3 +111,95 @@ func (s *Stream) Run(init string) (result float64, err error) {
 	return rs4, nil
 }
 ```
+
+### Union
+
+`//go:generate go run ./cmd/union <package-name> <type-name> <types>...`
+
+```go
+package union
+
+//go:generate go run github.com/unsafe-risk/generatex/cmd/union union Union string int64 float64
+```
+
+```go
+// union.go
+package union
+
+type Union struct {
+	value any
+}
+
+func (m Union) IsInt64() bool {
+	_, ok := m.value.(int64)
+	return ok
+}
+
+func (m Union) AsInt64() (int64, bool) {
+	v, ok := m.value.(int64)
+	return v, ok
+}
+
+func (m Union) MustInt64() int64 {
+	v, ok := m.value.(int64)
+	if !ok {
+		panic("int64 is not the type of the value")
+	}
+	return v
+}
+
+func UnionOfInt64(v int64) Union {
+	return Union{
+		value: v,
+	}
+}
+
+func (m Union) IsFloat64() bool {
+	_, ok := m.value.(float64)
+	return ok
+}
+
+func (m Union) AsFloat64() (float64, bool) {
+	v, ok := m.value.(float64)
+	return v, ok
+}
+
+func (m Union) MustFloat64() float64 {
+	v, ok := m.value.(float64)
+	if !ok {
+		panic("float64 is not the type of the value")
+	}
+	return v
+}
+
+func UnionOfFloat64(v float64) Union {
+	return Union{
+		value: v,
+	}
+}
+
+func (m Union) IsString() bool {
+	_, ok := m.value.(string)
+	return ok
+}
+
+func (m Union) AsString() (string, bool) {
+	v, ok := m.value.(string)
+	return v, ok
+}
+
+func (m Union) MustString() string {
+	v, ok := m.value.(string)
+	if !ok {
+		panic("string is not the type of the value")
+	}
+	return v
+}
+
+func UnionOfString(v string) Union {
+	return Union{
+		value: v,
+	}
+}
+
+```
